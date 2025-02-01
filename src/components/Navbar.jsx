@@ -47,7 +47,9 @@ const Navbar = () => {
                {navMenu}
             </ul>
          </div>
-         <div className="navbar-end">
+         <div className="navbar-end space-x-3">
+            <Link href={'/register'}><button>Register</button></Link>
+            <Link href={'/login'}><button>Login</button></Link>
             <a className="btn btn-outline">Appointment</a>
          </div>
       </div>
