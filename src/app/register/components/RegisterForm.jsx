@@ -3,6 +3,9 @@ import React from "react";
 import Link from "next/link";
 import { FaFacebookF, FaLinkedinIn, FaGoogle } from "react-icons/fa";
 import SocialLogin from "@/app/login/components/SocialLogin";
+import { registerUser } from "@/app/actions/auth/registerUser";
+
+
 export default function RegisterForm() {
    const handleSubmit = async (e) => {
       e.preventDefault();
@@ -10,6 +13,8 @@ export default function RegisterForm() {
       const name = form.name.value;
       const email = form.email.value;
       const password = form.password.value;
+      const payload = { name, email, password }
+      await registerUser(payload)
    };
    return (
       <form onSubmit={handleSubmit} className="w-full max-w-lg space-y-8">
@@ -46,7 +51,7 @@ export default function RegisterForm() {
                className="input input-bordered w-full"
             />
          </label>
-         <button className="w-full h-12 bg-orange-500 text-white font-bold">
+         <button type="submit" className="w-full h-12 bg-orange-500 text-white font-bold">
             Sign Up
          </button>
          <p className="text-center">Or Sign In with</p>
