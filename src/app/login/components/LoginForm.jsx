@@ -1,12 +1,9 @@
 "use client";
-import React from "react";
-import { FaGithub } from "react-icons/fa6";
-import { FaGoogle } from "react-icons/fa";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import SocialLogin from "./SocialLogin";
-import { signIn } from "next-auth/react"
 
 export default function LoginForm() {
    const router = useRouter();

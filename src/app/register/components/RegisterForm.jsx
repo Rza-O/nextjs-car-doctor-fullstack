@@ -1,9 +1,7 @@
 "use client";
-import React from "react";
-import Link from "next/link";
-import { FaFacebookF, FaLinkedinIn, FaGoogle } from "react-icons/fa";
-import SocialLogin from "@/app/login/components/SocialLogin";
 import { registerUser } from "@/app/actions/auth/registerUser";
+import SocialLogin from "@/app/login/components/SocialLogin";
+import Link from "next/link";
 
 
 export default function RegisterForm() {
