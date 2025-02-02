@@ -8,7 +8,7 @@ const CheckoutPage = async ({ params }) => {
    
    return (
       <div>
-         <CheckoutForm></CheckoutForm>
+         <CheckoutForm data={data}></CheckoutForm>
       </div>
    );
 };

@@ -1,8 +1,13 @@
 "use client"
+import { useSession } from 'next-auth/react';
 import React from 'react';
 import toast from 'react-hot-toast';
 
-const CheckoutForm = () => {
+const CheckoutForm = ({ data }) => {
+   
+   const {data:session} = useSession();
+
+
    const handleBookService = async (e) => {
       toast("Submitting Booking...");
       e.preventDefault();
@@ -13,30 +18,32 @@ const CheckoutForm = () => {
       const phone = form.phone.value;
       const address = form.address.value;
       const email = form.email.value;
-      // const bookingPayload = {
-      //    // Session
-      //    customerName: name,
-      //    email,
+      
+      const bookingPayload = {
+         customerName: name,
+         email,
+         date,
+         phone,
+         address,
+         service_id: data?._id,
+         service_name: data?.title,
+         service_img: data?.img,
+         service_price: data?.price,
+      };
+      console.log(bookingPayload)
 
-      //    // User Inputs
-      //    date,
-      //    phone,
-      //    address,
-
-      //    // Extra information
-      //    service_id: data._id,
-      //    service_name: data.title,
-      //    service_img: data.img,
-      //    service_price: data.price,
-      // };
-
-      console.log(bookingPayload);
+      const res = await fetch('http://localhost:3000/api/service', {
+         method: "POST",
+         body: JSON.stringify(bookingPayload),
+      })
+      const postedResponse = await res.json()
+      console.log("posted data ", postedResponse);
    };
    return (
       <div className="my-10">
          <div className="w-11/12 mx-auto">
             <h2 className="text-center text-3xl mb-4">
-               {/* Book Service : {data?.title} */}
+               Book Service : {data?.title}
             </h2>
             <form onSubmit={handleBookService}>
                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -45,7 +52,7 @@ const CheckoutForm = () => {
                         <span className="label-text">Name</span>
                      </label>
                      <input
-                        // defaultValue={session?.user?.name}
+                        defaultValue={session?.user?.name}
                         readOnly
                         type="text"
                         name="name"
@@ -58,7 +65,7 @@ const CheckoutForm = () => {
                         <span className="label-text">Email</span>
                      </label>
                      <input
-                        // defaultValue={session?.user?.email}
+                        defaultValue={session?.user?.email}
                         readOnly
                         type="text"
                         name="email"
@@ -72,7 +79,7 @@ const CheckoutForm = () => {
                      </label>
                      <input
                         type="text"
-                        // defaultValue={data?.price}
+                        defaultValue={data?.price}
                         readOnly
                         name="price"
                         className="input input-bordered"

@@ -9,3 +9,4 @@ export const GET = async (req, { params }) => {
    const data = await servicesCollection.findOne({ _id: new ObjectId(p.id) })
    return NextResponse.json(data);
 }
+
