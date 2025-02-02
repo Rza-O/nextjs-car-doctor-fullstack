@@ -1,45 +1,41 @@
 "use client"
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import toast from 'react-hot-toast';
 
-const CheckoutForm = ({ data }) => {
+const BookingUpdateForm = ({ data }) => {
+   const router = useRouter()
 
    const { data: session } = useSession();
+   console.log(data)
 
 
    const handleBookService = async (e) => {
-      toast("Submitting Booking...");
+      toast("Updating Booking...");
       e.preventDefault();
 
       const form = e.target;
-      const name = form.name.value;
       const date = form.date.value;
       const phone = form.phone.value;
       const address = form.address.value;
-      const email = form.email.value;
 
       const bookingPayload = {
-         customerName: name,
-         email,
          date,
          phone,
          address,
-         service_id: data?._id,
-         service_name: data?.title,
-         service_img: data?.img,
-         service_price: data?.price,
       };
       console.log(bookingPayload)
 
       try {
-         const res = await fetch('https://nextjs-car-doctor-fullstack.vercel.app/api/service', {
-            method: "POST",
+         const res = await fetch(`https://nextjs-car-doctor-fullstack.vercel.app/api/my-bookings/${data._id}`, {
+            method: "PATCH",
             body: JSON.stringify(bookingPayload),
          })
          const postedResponse = await res.json()
-         toast.success('Bookings Confirmed!')
-         console.log("posted data ", postedResponse);
+         toast.success('Bookings updated!')
+         console.log("updated data ", postedResponse);
+         router.push('/my-bookings');
       } catch (error) {
          console.log(error)
       }
@@ -48,7 +44,7 @@ const CheckoutForm = ({ data }) => {
       <div className="my-10">
          <div className="w-11/12 mx-auto">
             <h2 className="text-center text-3xl mb-4">
-               Book Service : {data?.title}
+               Update Booking Service : {data?.service_name}
             </h2>
             <form onSubmit={handleBookService}>
                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -84,7 +80,7 @@ const CheckoutForm = ({ data }) => {
                      </label>
                      <input
                         type="text"
-                        defaultValue={data?.price}
+                        defaultValue={data?.service_price}
                         readOnly
                         name="price"
                         className="input input-bordered"
@@ -94,7 +90,7 @@ const CheckoutForm = ({ data }) => {
                      <label className="label">
                         <span className="label-text">Date</span>
                      </label>
-                     <input type="date" name="date" className="input input-bordered" />
+                     <input defaultValue={data?.date} type="date" name="date" className="input input-bordered" />
                   </div>
                   <div className="form-control">
                      <label className="label">
@@ -103,6 +99,7 @@ const CheckoutForm = ({ data }) => {
                      <input
                         type="text"
                         name="phone"
+                        defaultValue={data?.phone}
                         placeholder="Your Phone"
                         className="input input-bordered"
                      />
@@ -114,6 +111,7 @@ const CheckoutForm = ({ data }) => {
                      <input
                         type="text"
                         name="address"
+                        defaultValue={data?.address}
                         placeholder="Your Address"
                         className="input input-bordered"
                      />
@@ -123,7 +121,7 @@ const CheckoutForm = ({ data }) => {
                   <input
                      className="btn btn-secondary btn-block"
                      type="submit"
-                     value="Order Confirm"
+                     value="Update Booking"
                   />
                </div>
             </form>
@@ -132,4 +130,4 @@ const CheckoutForm = ({ data }) => {
    );
 };
 
-export default CheckoutForm;
+export default BookingUpdateForm;
