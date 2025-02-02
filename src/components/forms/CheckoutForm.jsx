@@ -4,8 +4,8 @@ import React from 'react';
 import toast from 'react-hot-toast';
 
 const CheckoutForm = ({ data }) => {
-   
-   const {data:session} = useSession();
+
+   const { data: session } = useSession();
 
 
    const handleBookService = async (e) => {
@@ -18,7 +18,7 @@ const CheckoutForm = ({ data }) => {
       const phone = form.phone.value;
       const address = form.address.value;
       const email = form.email.value;
-      
+
       const bookingPayload = {
          customerName: name,
          email,
@@ -32,12 +32,17 @@ const CheckoutForm = ({ data }) => {
       };
       console.log(bookingPayload)
 
-      const res = await fetch('http://localhost:3000/api/service', {
-         method: "POST",
-         body: JSON.stringify(bookingPayload),
-      })
-      const postedResponse = await res.json()
-      console.log("posted data ", postedResponse);
+      try {
+         const res = await fetch('http://localhost:3000/api/service', {
+            method: "POST",
+            body: JSON.stringify(bookingPayload),
+         })
+         const postedResponse = await res.json()
+         toast.success('Bookings Confirmed!')
+         console.log("posted data ", postedResponse);
+      } catch (error) {
+         console.log(error)
+      }
    };
    return (
       <div className="my-10">
