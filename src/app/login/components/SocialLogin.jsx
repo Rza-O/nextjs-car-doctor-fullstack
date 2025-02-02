@@ -1,16 +1,27 @@
 "use client";
 import { FaGithub } from "react-icons/fa6";
 import { FaGoogle } from "react-icons/fa";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { useEffect } from "react";
 
 export default function SocialLogin() {
+   const router = useRouter();
+   const session = useSession();
 
 
-   const handleSocialLogin = async (providerName) => {
+   const handleSocialLogin = (providerName) => {
       console.log(providerName)
-      const result = await signIn(providerName, { redirect: false });
-      console.log(result)
+      signIn(providerName);
    };
+
+   useEffect(() => {
+      if (session?.status == 'authenticated') {
+         router.push('/');
+         toast.success('Logged in successfully using social login')
+      }
+   }, [session?.status]);
 
 
    return (
@@ -25,7 +36,7 @@ export default function SocialLogin() {
             onClick={() => handleSocialLogin("github")}
             className="bg-slate-200 rounded-full p-3"
          >
-            <FaGithub type="button" className="cursor-pointer"/>
+            <FaGithub type="button" className="cursor-pointer" />
          </p>
       </div>
    );

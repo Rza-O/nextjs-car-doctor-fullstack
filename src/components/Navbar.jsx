@@ -5,7 +5,7 @@ import Link from 'next/link';
 import React from 'react';
 
 const Navbar = () => {
-   const {data: session, status} = useSession();
+   const { data: session, status } = useSession();
 
    const navMenu =
       <>
@@ -52,7 +52,10 @@ const Navbar = () => {
          </div>
          <div className="navbar-end space-x-3">
             {status == 'authenticated' ? (
-               <ul><button onClick={()=> signOut()}>logout</button></ul>
+               <ul className='flex gap-3 items-center justify-center'>
+                  <li><Image className='rounded-full' src={session?.user?.image} width={50} height={20} alt='profile-image'></Image></li>
+                  <li><button onClick={() => signOut()}>logout</button></li>
+               </ul>
             ) : (
                <>
                   <Link href={'/register'}><button>Register</button></Link>
